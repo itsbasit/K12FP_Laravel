@@ -1,0 +1,11 @@
+.breadcrumb {
+    background: linear-gradient(
+            0deg,
+            rgba(20, 19, 20, 0.774),
+            rgba(20, 19, 20, 0.801)
+        ),
+        url("/img/breadcrumb.jpg");
+    background-position: center;
+    background-size: cover;
+    padding: 10% 0%;
+}

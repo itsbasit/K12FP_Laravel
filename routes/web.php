@@ -7,6 +7,7 @@ use App\Http\Controllers\admin\DistrictsController;
 use App\Http\Controllers\admin\SchoolsDataController;
 use App\Http\Controllers\admin\SchoolsController;
 use App\Http\Controllers\admin\VideosController;
+use App\Http\Controllers\admin\UsersController;
 // Fm Controllers 
 use App\Http\Controllers\fm\FundraisersController;
 
@@ -31,20 +32,31 @@ Route::get('/', [App\Http\Controllers\SiteController::class, 'index'])->name('ho
 // Super Admin Routes
 
 // Admin Routes
-Route::prefix('admin')->middleware(['auth','roleChecker'])->group(function () {
+// Route::group(['middleware' => ['role:super_admin']], function () {
+//     Route::resource('states', StatesController::class);
+// });
+
+
+Route::prefix('admin')->middleware(['auth','role:super_admin'])->group(function () {
     Route::resource('states', StatesController::class);
     Route::resource('counties', CountiesController::class);
     Route::resource('districts', DistrictsController::class);
     Route::resource('schools', SchoolsController::class);
     Route::resource('videos', VideosController::class);
+    Route::get('/users', [App\Http\Controllers\admin\UsersController::class, 'index'])->name('users');
+    Route::post('/users/block', [App\Http\Controllers\admin\UsersController::class, 'block'])->name('block');
+    Route::delete('/users/destroy', [App\Http\Controllers\admin\UsersController::class, 'destroy'])->name('destroy');
     Route::get('/import', [App\Http\Controllers\SchoolsDataController::class, 'index'])->name('import');
-    Route::post('/import', [App\Http\Controllers\SchoolsDataController::class, 'store'])->name('import');
+    Route::post('/import', [App\Http\Controllers\SchoolsDataController::class, 'store']);
 });
 
-Route::prefix('fm')->middleware(['auth','roleChecker'])->group(function () {
+
+Route::prefix('fm')->middleware(['auth','role:fm'])->group(function () {
     Route::get('/videos', [App\Http\Controllers\fm\VideosController::class, 'index'])->name('videos');
-    Route::post('/getCounty', [App\Http\Controllers\fm\FetchData::class, 'getCounty'])->name('getCounty');
-    Route::resource('fund-raisers', FundraisersController::class);
+    Route::get('/getCounty', [App\Http\Controllers\fm\FetchData::class, 'getCounty'])->name('getCounty');
+    Route::get('/getDistricts', [App\Http\Controllers\fm\FetchData::class, 'getDistricts'])->name('getDistricts');
+    Route::get('/getSchools', [App\Http\Controllers\fm\FetchData::class, 'getSchools'])->name('getSchools');
+    Route::resource('fund_raisers', FundraisersController::class);
 });
 
 

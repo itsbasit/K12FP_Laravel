@@ -11,6 +11,7 @@ class CreateFundraisersTable extends Migration
      *
      * @return void
      */
+   
     public function up()
     {
         Schema::create('fundraisers', function (Blueprint $table) {
@@ -20,7 +21,7 @@ class CreateFundraisersTable extends Migration
             $table->string('name');
             $table->string('schoolName');
             $table->unsignedBigInteger('created_by');
-            $table->foreign('created_by')->references('id')->on('fund_manager')->onDelete('cascade');
+            $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

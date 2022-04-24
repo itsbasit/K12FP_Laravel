@@ -31904,5 +31904,9 @@ div.tagsinput span.tag a {
   float: right;
 }
 
+.table-responsive{
+  overflow-x: hidden !important;
+}
+
 
 /*# sourceMappingURL=app.css.map*/

@@ -8,9 +8,6 @@ use Illuminate\Http\Request;
 use App\Models\admin\States;
 use DataTables;
 
-
-
-
 class StatesController extends Controller
 {
     /**

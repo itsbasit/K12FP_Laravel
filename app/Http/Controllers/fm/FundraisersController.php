@@ -25,7 +25,7 @@ class FundraisersController extends Controller
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
      
-                           $btn = '<a href="fund-raisers/'.$row->id.'/edit" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>';
+                           $btn = '<a href="fund_raisers/'.$row->id.'/edit" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>';
                            $btn .= '<a data-id="'.$row->id.'" class="delete btn btn-danger btn-xs" href="javascript:void(0)"><i class="fa fa-trash"></i></a>';
     
                             return $btn;
@@ -47,11 +47,6 @@ class FundraisersController extends Controller
         return view('dashboard.pages.fm.fundraiser.createFundraiser',compact('states'));
     }
 
-
-    public function getCounty()
-    {
-        echo 'im here';
-    }
     /**
      * Store a newly created resource in storage.
      *
@@ -60,7 +55,15 @@ class FundraisersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = new FundraisersModel;
+        $data->name = $request->name;
+        $data->color = $request->color;
+        $data->logo = $request->logo;
+        $data->created_by = \Auth::user()->id;
+        $data->schoolName = $request->schoolName;
+        $data->save();
+        toastr()->success('Fundraiser Created Successfully');
+        return redirect('fm/fund_raisers');
     }
 
     /**

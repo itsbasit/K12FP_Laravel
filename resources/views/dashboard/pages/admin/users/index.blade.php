@@ -1,5 +1,5 @@
 @extends('dashboard.layout.master')
-@section('title','Fundraisers')
+@section('title','Users')
 
 @push('plugin-styles')
 <link href="{{ asset('assets/plugins/datatables-net/dataTables.bootstrap4.css') }}" rel="stylesheet" />
@@ -8,27 +8,25 @@
 @section('content')
 <nav class="page-breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Fund raisers</a></li>
-        <li class="breadcrumb-item active" aria-current="page">All</li>
+        <li class="breadcrumb-item"><a href="#">Users</a></li>
+        <li class="breadcrumb-item active" aria-current="page">All Users</li>
     </ol>
 </nav>
+
 <div class="row">
     <div class="col-md-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <div class="table-responsive overflow-auto">
+                <div class="table-responsive">
                     <div class="d-flex mb-3 ">
-                        <a href="{{url('fm/fund_raisers/create')}}" class="ml-auto  btn btn-primary">Add New
-                            Fundraiser</a>
+                        <a href="{{url('admin/users/create')}}" class="ml-auto  btn btn-primary">Add State</a>
                     </div>
                     <table id="dataTableExample" class="table">
                         <thead>
                             <tr>
-                                <th>Fundraiser Logo</th>
-                                <th>Fundraiser Name</th>
-                                <th>Color</th>
-                                <th>School Name</th>
-                                <th>Created By</th>
+                                <th>Name</th>
+                                <th>Email</th>
+
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -57,27 +55,16 @@ $(function() {
     var table = $('#dataTableExample').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('fund_raisers.index') }}",
+        ajax: "{{ route('users') }}",
         columns: [{
-                data: 'logo',
-                name: 'logo'
-            },
-            {
                 data: 'name',
                 name: 'name'
             },
             {
-                data: 'color',
-                name: 'color'
+                data: 'email',
+                name: 'email'
             },
-            {
-                data: 'schoolName',
-                name: 'schoolName'
-            },
-            {
-                data: 'created_by',
-                name: 'created_by'
-            },
+
             {
                 data: 'action',
                 name: 'action',
@@ -89,20 +76,40 @@ $(function() {
 
 });
 
+// Delete User
 $(document).on('click', '.delete', function() {
+    var id = $(this).data('id');
+    if (confirm("Are you sure you want to Delete this Record")) {
+        $.ajax({
+            type: "DELETE",
+            url: "users/destroy/" + id,
+            data: {
+                _token: "{{ csrf_token() }}",
+            },
+            success: function(response) {
+                $('#dataTableExample').DataTable().ajax.reload();
+            }
+        });
+    }
+});
+
+
+// Block User
+$(document).on('click', '.block', function() {
     var id = $(this).data('id');
 
     swal({
-        title: `Are you sure you want to delete this record?`,
+        title: `Are you sure you want to block this user?`,
         icon: "warning",
         buttons: true,
         dangerMode: true,
     }).then((willDelete) => {
         if (willDelete) {
             $.ajax({
-                type: "DELETE",
-                url: "districts/" + id,
+                type: "POST",
+                url: "users/block/",
                 data: {
+                    id,
                     _token: "{{ csrf_token() }}",
                 },
                 success: function(response) {

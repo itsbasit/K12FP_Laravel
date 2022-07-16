@@ -118,7 +118,7 @@ class CountiesController extends Controller
     public function destroy($id)
     {
         Counties::where('id', $id)->delete();
-        
+        toastr()->success('Record deleted Successfully');
         return response()->json("success");
     }
 }

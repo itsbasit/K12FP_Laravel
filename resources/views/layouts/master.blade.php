@@ -7,7 +7,7 @@
     <title>@yield('title')</title>
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/frontend.css">
-    @toastr_css
+    
 </head>
 <body>
     @include('layouts.header')
@@ -23,7 +23,5 @@
     @stack('plugin-scripts')
     @stack('custom-scripts')
 
-    @toastr_js
-    @toastr_render
 </body>
 </html>

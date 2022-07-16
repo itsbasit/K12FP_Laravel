@@ -9,3 +9,11 @@
     background-size: cover;
     padding: 10% 0%;
 }
+
+.toast-success {
+    background-color: #51a351 !important;
+}
+
+.toast-error {
+    background-color: #bd362f !important;
+}

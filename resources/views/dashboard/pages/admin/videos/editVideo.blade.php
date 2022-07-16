@@ -27,12 +27,18 @@
               <div class="col-md-6 offset-md-3">
                 <div class="form-group">
                     <label class="form-label">Vidoe Name/Title:</label>
-                <input value="{{$data->title}}" name="title" class="form-control mb-4 mb-md-0" placeholder="Enter Video title" required>
+                <input value="{{$data->title}}" name="title" class="form-control mb-4 mb-md-0 {{$errors->has('title') ? 'is-invalid':''}}" placeholder="Enter Video title" required>
+                @error('title')
+                <label id="name-error" class="error invalid-feedback" for="name">{{$message}}</label>
+                @enderror
                 </div>
 
                 <div class="form-group">
                   <label class="form-label">Vidoe link:</label>
-              <input value="{{$data->video_link}}" name="url" class="form-control mb-4 mb-md-0" placeholder="Enter Video Link" required>
+              <input value="{{$data->video_link}}" name="video_link" class="form-control mb-4 mb-md-0 {{$errors->has('video_link') ? 'is-invalid':''}}" placeholder="Enter Video Link" required>
+              @error('video_link')
+                <label id="name-error" class="error invalid-feedback" for="name">{{$message}}</label>
+                @enderror
               </div>
 
 

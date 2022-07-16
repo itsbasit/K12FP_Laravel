@@ -18,8 +18,8 @@
     <div class="col-md-12 grid-margin">
       <div class="card">
         <div class="card-body">
-          
-            <form class="forms-sample" method="POST" action="{{route('videos.store')}}">
+        
+            <form class="forms-sample" id="checkValidation" method="POST" action="{{route('videos.store')}}">
             <h4 class="mb-5">Add New Video</h4>
             @csrf
             
@@ -27,12 +27,18 @@
               <div class="col-md-6 offset-md-3">
                 <div class="form-group">
                     <label class="form-label">Video Name:</label>
-                <input name="title" class="form-control mb-4 mb-md-0" placeholder="Enter Video title" required>
+                <input name="title" value="{{ old('title') }}" class="form-control mb-4 mb-md-0 {{$errors->has('title') ? 'is-invalid':''}}" placeholder="Enter Video title" >
+                @error('title')
+                <label id="name-error" class="error invalid-feedback" for="name">{{$message}}</label>
+                @enderror
                 </div>
 
                 <div class="form-group">
                   <label class="form-label">Video URL:</label>
-              <input name="url" class="form-control mb-4 mb-md-0" placeholder="Enter Video Link" required>
+              <input name="video_link" value="{{ old('video_link') }}" class="form-control mb-4 mb-md-0 {{$errors->has('video_link') ? 'is-invalid':''}}" placeholder="Enter Video Link" >
+              @error('video_link')
+                <label id="name-error" class="error invalid-feedback" for="name">{{$message}}</label>
+                @enderror
               </div>
 
                 <div class="form-group">
@@ -50,4 +56,13 @@
 
   @endsection
 
- 
+  @push('custom-scripts')
+  <script>
+    $(document).ready(function() {
+
+  $("#checkValidation").on("submit", function(){
+    
+  })
+  });
+  </script>
+  @endpush

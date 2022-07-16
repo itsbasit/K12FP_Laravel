@@ -1,5 +1,5 @@
 @extends('dashboard.layout.master')
-@section('title','States')
+@section('title','Schools')
 
 @push('plugin-styles')
   <link href="{{ asset('assets/plugins/datatables-net/dataTables.bootstrap4.css') }}" rel="stylesheet" />

@@ -4,12 +4,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\StatesController;
 use App\Http\Controllers\admin\CountiesController;
 use App\Http\Controllers\admin\DistrictsController;
-use App\Http\Controllers\admin\SchoolsDataController;
 use App\Http\Controllers\admin\SchoolsController;
 use App\Http\Controllers\admin\VideosController;
-use App\Http\Controllers\admin\UsersController;
 // Fm Controllers 
 use App\Http\Controllers\fm\FundraisersController;
+use Illuminate\Support\Facades\Auth;
+
 
 
 /*
@@ -24,19 +24,11 @@ use App\Http\Controllers\fm\FundraisersController;
 */
 
 
+Route::get('/dashboard', [App\Http\Controllers\admin\HomeController::class, 'index'])->middleware(['auth']);;
 
-Route::get('/dashboard', [App\Http\Controllers\admin\HomeController::class, 'index']);
 Route::get('/', [App\Http\Controllers\SiteController::class, 'index'])->name('home');
 
-
 // Super Admin Routes
-
-// Admin Routes
-// Route::group(['middleware' => ['role:super_admin']], function () {
-//     Route::resource('states', StatesController::class);
-// });
-
-
 Route::prefix('admin')->middleware(['auth','role:super_admin'])->group(function () {
     Route::resource('states', StatesController::class);
     Route::resource('counties', CountiesController::class);
@@ -58,7 +50,6 @@ Route::prefix('fm')->middleware(['auth','role:fm'])->group(function () {
     Route::get('/getSchools', [App\Http\Controllers\fm\FetchData::class, 'getSchools'])->name('getSchools');
     Route::resource('fund_raisers', FundraisersController::class);
 });
-
 
 Auth::routes();
 

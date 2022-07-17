@@ -1,5 +1,5 @@
 @extends('dashboard.layout.master')
-@section('title','Fundraisers')
+@section('title','Students')
 
 @push('plugin-styles')
 <link href="{{ asset('assets/plugins/datatables-net/dataTables.bootstrap4.css') }}" rel="stylesheet" />
@@ -8,7 +8,7 @@
 @section('content')
 <nav class="page-breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Fund raisers</a></li>
+        <li class="breadcrumb-item"><a href="#">High Students</a></li>
         <li class="breadcrumb-item active" aria-current="page">All</li>
     </ol>
 </nav>
@@ -18,17 +18,19 @@
             <div class="card-body">
                 <div class="table-responsive overflow-auto">
                     <div class="d-flex mb-3 ">
-                        <a href="{{url('fm/fund_raisers/create')}}" class="ml-auto  btn btn-primary">Add New
-                            Fundraiser</a>
+                        <a href="{{url('fm/students/create')}}" class="ml-auto  btn btn-primary">Add New
+                            Student</a>
                     </div>
                     <table id="dataTableExample" class="table">
                         <thead>
                             <tr>
-                                
-                                <th>Fundraiser Name</th>
-                                <th>Color</th>
-                                <th>School Name</th>
-                                <th>Fundraiser Logo</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Cell Phone</th>
+                                <th>k12FP Reg #</th>
+                                <th>Grad Year</th>
+                                <th>Grade</th>
+                                <th>School</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -57,27 +59,37 @@ $(function() {
     var table = $('#dataTableExample').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('fund_raisers.index') }}",
+        ajax: "{{ route('students.index') }}",
         columns: [
             {
                 data: 'name',
                 name: 'name'
             },
             {
-                data: 'color',
-                name: 'color'
+                data: 'email',
+                name: 'email'
+            },
+            {
+                data: 'cell',
+                name: 'cell'
+            },
+            {
+                data: 'k12fp_number',
+                name: 'k12fp_number'
+            },
+            {
+                data: 'graduation_year',
+                name: 'graduation_year'
+            },
+            {
+                data: 'grade',
+                name: 'grade'
             },
             {
                 data: 'schoolName',
                 name: 'schoolName'
             },
-            {
-                data: 'logo',
-                name: 'logo',
-                render: function( data, type, full, meta ) {
-                        return "<img src=\"/uploads/" + data + "\" height=\"50\"/>";
-                    }
-            },
+            
             {
                 data: 'action',
                 name: 'action',

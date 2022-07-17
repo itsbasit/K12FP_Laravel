@@ -8,6 +8,7 @@ use App\Http\Controllers\admin\SchoolsController;
 use App\Http\Controllers\admin\VideosController;
 // Fm Controllers 
 use App\Http\Controllers\fm\FundraisersController;
+use App\Http\Controllers\fm\StudentsController;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -49,6 +50,7 @@ Route::prefix('fm')->middleware(['auth','role:fm'])->group(function () {
     Route::get('/getDistricts', [App\Http\Controllers\fm\FetchData::class, 'getDistricts'])->name('getDistricts');
     Route::get('/getSchools', [App\Http\Controllers\fm\FetchData::class, 'getSchools'])->name('getSchools');
     Route::resource('fund_raisers', FundraisersController::class);
+    Route::resource('students', StudentsController::class);
 });
 
 Auth::routes();

@@ -19,9 +19,11 @@ class CreateFundraisersTable extends Migration
             $table->string('color');
             $table->string('logo');
             $table->string('name');
-            $table->string('schoolName');
+            $table->string('school');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->enum('status', ['Active', 'Closed']);
+            $table->date('ended_at')->nullable();
             $table->timestamps();
         });
     }

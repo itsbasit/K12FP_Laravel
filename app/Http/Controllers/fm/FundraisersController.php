@@ -9,7 +9,8 @@ use App\Models\admin\States;
 use App\Models\admin\Counties;
 use App\Models\admin\District;
 use App\Models\admin\Schools;
-
+use Validator;
+use DataTables;
 class FundraisersController extends Controller
 {
     /**
@@ -18,17 +19,17 @@ class FundraisersController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {
+    { 
+        
         if ($request->ajax()) {
-            $data = FundraisersModel::get();
+            $data = FundraisersModel::where('user_id',\Auth::user()->id)->select('fundraisers.*', 'schools.schoolName')
+            ->join('schools', 'fundraisers.school', '=', 'schools.id')->get();
             return Datatables::of($data)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
-     
-                           $btn = '<a href="fund_raisers/'.$row->id.'/edit" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>';
-                           $btn .= '<a data-id="'.$row->id.'" class="delete btn btn-danger btn-xs" href="javascript:void(0)"><i class="fa fa-trash"></i></a>';
-    
-                            return $btn;
+                        // $btn = '<a href="fund_raisers/'.$row->id.'/edit" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>';
+                        $btn = '<a data-id="'.$row->id.'" class="delete btn btn-danger btn-xs" href="javascript:void(0)"><i class="fa fa-trash"></i></a>';
+                        return $btn;
                     })
                     ->rawColumns(['action'])
                     ->make(true);
@@ -47,6 +48,7 @@ class FundraisersController extends Controller
         return view('dashboard.pages.fm.fundraiser.createFundraiser',compact('states'));
     }
 
+
     /**
      * Store a newly created resource in storage.
      *
@@ -55,15 +57,33 @@ class FundraisersController extends Controller
      */
     public function store(Request $request)
     {
-        $data = new FundraisersModel;
-        $data->name = $request->name;
-        $data->color = $request->color;
-        $data->logo = $request->logo;
-        $data->created_by = \Auth::user()->id;
-        $data->schoolName = $request->schoolName;
-        $data->save();
-        toastr()->success('Fundraiser Created Successfully');
-        return redirect('fm/fund_raisers');
+        // dd($request->all());
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'color' => 'required',
+            'logo' => 'required|mimes:jpeg,png,jpg,gif',
+            'school' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return redirect()->back()
+                        ->withErrors($validator)
+                        ->withInput();
+        } else {
+    
+            $logoName = 'fundraiser'. time().'.'.$request->logo->extension();  
+            $request->logo->move(public_path('uploads'), $logoName);
+
+            $data = new FundraisersModel;
+            $data->name = $request->name;
+            $data->color = $request->color;
+            $data->logo = $logoName;
+            $data->user_id = \Auth::user()->id;
+            $data->school = $request->school;
+            $data->save();
+            toastr()->success('Fundraiser Created Successfully');
+            return redirect('fm/fund_raisers');
+        }
+        
     }
 
     /**
@@ -74,7 +94,7 @@ class FundraisersController extends Controller
      */
     public function show($id)
     {
-        //
+      echo "Calling". $id;
     }
 
     /**
@@ -85,7 +105,8 @@ class FundraisersController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data = FundraisersModel::find($id);
+        return view('dashboard.pages.fm.fundraiser.editFundraiser', compact('data'));
     }
 
     /**
@@ -108,6 +129,14 @@ class FundraisersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $image = FundraisersModel::find($id);
+            unlink("uploads/".$image->logo);
+            FundraisersModel::where('id', $id)->delete();
+            return response()->json("success");
+        } catch (\Throwable $th) {
+            toastr()->error($th->getMessage());
+            return redirect()->back();
+        }
     }
 }

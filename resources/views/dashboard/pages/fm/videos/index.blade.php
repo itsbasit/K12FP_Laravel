@@ -24,7 +24,7 @@
         </form>
 
         <div class="embed-responsive embed-responsive-16by9">
-            <iframe id="video_src" class="embed-responsive-item" src="#"></iframe>
+            <iframe id="video_src" class="embed-responsive-item" src="https://www.youtube.com/embed/1V2vnfsAe0M"></iframe>
           </div>
       </div>
     </div>
@@ -37,6 +37,7 @@
   $("#video").on('change',function()
   {
     var link = $('#video').find(":selected").val();
+    
     $('#video_src').attr('src',link);
   })
 </script>

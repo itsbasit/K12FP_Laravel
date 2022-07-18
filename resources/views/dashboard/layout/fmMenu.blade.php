@@ -35,7 +35,7 @@
             <div class="collapse" id="students">
                 <ul class="nav sub-menu">
                     <li class="nav-item">
-                        <a href="#" class="nav-link">High Students</a>
+                        <a href="{{url('fm/students')}}" class="nav-link">High Students</a>
                     </li>
 
                     <li class="nav-item">

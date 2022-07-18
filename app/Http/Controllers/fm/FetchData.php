@@ -30,4 +30,25 @@ class FetchData extends Controller
       $schools = Schools::where('districtName', $districtName)->get();
       echo json_encode($schools);
   }
+
+  public function getSchoolByName(Request $request)
+  {
+    $search = $request->search;
+    if($search =='')
+    {
+        $schools = Schools::orderby('schoolName','asc')->select('id','schoolName')->limit(5)->get();
+    } else {
+       $schools= Schools::orderby('schoolName','asc')->select('id','schoolName')->where('schoolName', 'like', '%' .$search . '%')->limit(5)->get();
+    }
+
+    $response = array();
+      foreach($schools as $school){
+         $response[] = array(
+              "id"=>$school->id,
+              "text"=>$school->schoolName
+         );
+      }
+      return response()->json($response); 
+    
+  }
 }

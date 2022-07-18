@@ -5,7 +5,11 @@ namespace App\Http\Controllers\fm;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\fm\HighStudentsModel;
+use App\Models\admin\Schools;
+use App\Http\Requests\StoreHighStudentsRequest;
 use DataTables;
+use Validator;
+use Auth;
 
 class StudentsController extends Controller
 {
@@ -16,7 +20,6 @@ class StudentsController extends Controller
      */
     public function index(Request $request)
     {
-     
         if ($request->ajax()) {
             $data = HighStudentsModel::where('added_by',\Auth::user()->id)->select('high_students.*', 'schools.schoolName')
             ->join('schools', 'high_students.school', '=', 'schools.id')->get();
@@ -30,7 +33,7 @@ class StudentsController extends Controller
                     ->rawColumns(['action'])
                     ->make(true);
         }
-        return view('dashboard.pages.fm.students.index');
+        return view('dashboard.pages.fm.high_students.index');
     }
 
     /**
@@ -40,7 +43,7 @@ class StudentsController extends Controller
      */
     public function create()
     {
-        return view('dashboard.pages.fm.students.create');
+        return view('dashboard.pages.fm.high_students.create');
     }
 
     /**
@@ -49,9 +52,27 @@ class StudentsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreHighStudentsRequest $request)
     {
-        //
+        $validated = $request->validated();
+
+        try {
+        $user = HighStudentsModel::where('added_by',Auth::user()->id)->where('email',$request->email)->first();
+        if($user)
+        {
+            toastr()->error('You have already added the Student with this Email!');
+            return redirect()->back(); 
+        } else {
+            HighStudentsModel::create(array_merge($request->validated(), ['added_by' => Auth::user()->id]));
+            toastr()->success('Record inserted Successfully');
+            return redirect('fm/students');
+        }
+        
+        } catch (\Throwable $th) {
+        toastr()->error($th->getMessage());
+        return redirect()->back();
+        }
+        
     }
 
     /**
@@ -73,7 +94,9 @@ class StudentsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data = HighStudentsModel::where('high_students.id',$id)->select('schools.schoolName','schools.id','high_students.*')
+        ->join('schools', 'high_students.school', '=', 'schools.id')->first();
+        return view('dashboard.pages.fm.high_students.edit', compact('data'));
     }
 
     /**
@@ -83,9 +106,12 @@ class StudentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreHighStudentsRequest $request, $id)
     {
-        //
+        $data = HighStudentsModel::find($id);
+        $data->update($request->validated());
+        toastr()->success('Record Updated Successfully');
+        return redirect('fm/students');
     }
 
     /**
@@ -96,6 +122,12 @@ class StudentsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            HighStudentsModel::where('id', $id)->delete();
+            return response()->json("success");
+        } catch (\Throwable $th) {
+            toastr()->error($th->getMessage());
+            return redirect()->back();
+        }
     }
 }

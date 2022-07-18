@@ -49,6 +49,7 @@ Route::prefix('fm')->middleware(['auth','role:fm'])->group(function () {
     Route::get('/getCounty', [App\Http\Controllers\fm\FetchData::class, 'getCounty'])->name('getCounty');
     Route::get('/getDistricts', [App\Http\Controllers\fm\FetchData::class, 'getDistricts'])->name('getDistricts');
     Route::get('/getSchools', [App\Http\Controllers\fm\FetchData::class, 'getSchools'])->name('getSchools');
+    Route::get('/getSchoolByName', [App\Http\Controllers\fm\FetchData::class, 'getSchoolByName'])->name('getSchoolByName');
     Route::resource('fund_raisers', FundraisersController::class);
     Route::resource('students', StudentsController::class);
 });

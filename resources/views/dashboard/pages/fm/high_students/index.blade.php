@@ -113,7 +113,7 @@ $(document).on('click', '.delete', function() {
         if (willDelete) {
             $.ajax({
                 type: "DELETE",
-                url: "fund_raisers/" + id,
+                url: "students/" + id,
                 data: {
                     _token: "{{ csrf_token() }}",
                 },

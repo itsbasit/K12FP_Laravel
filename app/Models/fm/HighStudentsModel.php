@@ -9,4 +9,14 @@ class HighStudentsModel extends Model
 {
     use HasFactory;
     protected $table="high_students";
+    protected $fillable = [
+        'name',
+        'email',
+        'cell',
+        'k12fp_number',
+        'graduation_year',
+        'grade',
+        'school',
+        'added_by'
+    ];
 }

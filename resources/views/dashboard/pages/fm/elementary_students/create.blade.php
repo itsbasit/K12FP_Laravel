@@ -10,7 +10,7 @@
 
 <nav class="page-breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Students</a></li>
+        <li class="breadcrumb-item"><a href="#">Elementary Students</a></li>
         <li class="breadcrumb-item active" aria-current="page">Add New Student</li>
     </ol>
 </nav>
@@ -20,7 +20,7 @@
     <div class="col-md-12 grid-margin">
         <div class="card">
             <div class="card-body"> 
-                <form class="forms-sample" method="POST" enctype="multipart/form-data" action="{{route('students.store')}}">
+                <form class="forms-sample" method="POST" action="{{route('elementary_students.store')}}">
                 <h4 class="mb-5">Add New Student</h4>
                 @csrf
                 <div class="row mb-3">
@@ -57,6 +57,39 @@
                 </div>
 
 
+                <!-- Parent Info -->
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="form-label">Parent Full Name:</label>
+                            <input name="parentName" value="{{ old('parentName') }}" class="form-control mb-4 mb-md-0 {{$errors->has('name') ? 'is-invalid':''}}" placeholder="Full Name" required>
+                            @error('parentName')
+                            <label id="name-error" class="error invalid-feedback" for="name">{{$message}}</label>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="form-label">Parent Email Address:</label>
+                            <input type="email" name="parentEmail" value="{{ old('parentEmail') }}" class="form-control mb-4 mb-md-0 {{$errors->has('email') ? 'is-invalid':''}}" placeholder="Email Address" required>
+                            @error('parentEmail')
+                            <label id="name-error" class="error invalid-feedback" for="name">{{$message}}</label>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="form-label">Parent Cell Phone:</label>
+                            <input name="parentCell" type="tel" value="{{ old('parentCell') }}" class="form-control mb-4 mb-md-0 {{$errors->has('cell') ? 'is-invalid':''}}" placeholder="Cell Phone" >
+                            @error('parentCell')
+                            <label id="name-error" class="error invalid-feedback" for="name">{{$message}}</label>
+                            @enderror
+                        </div>
+                    </div>    
+   
+                </div>
 
                 <div class="row mb-3">
                     <div class="col-md-6">

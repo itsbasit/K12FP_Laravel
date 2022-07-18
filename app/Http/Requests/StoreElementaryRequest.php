@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreHighStudentsRequest extends FormRequest
+class StoreElementaryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -30,7 +30,10 @@ class StoreHighStudentsRequest extends FormRequest
             'k12fp_number' => 'required',
             'graduation_year' => 'required',
             'grade' => 'required',
-            'school' => 'required'
+            'school' => 'required',
+            'parentName'=>'required',
+            'parentEmail'=>'required',
+            'parentCell'=>'required|numeric',
         ];
     }
 }

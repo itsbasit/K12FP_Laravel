@@ -3,15 +3,16 @@
 namespace App\Http\Controllers\fm;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\fm\StudentsModel;
-use App\Models\admin\Schools;
+use App\Models\fm\ParentsModel;
+use Illuminate\Http\Request;
+use App\Http\Requests\StoreElementaryRequest;
 use App\Http\Requests\StoreHighStudentsRequest;
 use DataTables;
-use Validator;
 use Auth;
 
-class StudentsController extends Controller
+
+class ElementaryStudentsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,21 +20,26 @@ class StudentsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {   
-        if ($request->ajax()) {
-            $data = StudentsModel::where('added_by',\Auth::user()->id)->where('student_type','High')->select('students.*', 'schools.schoolName')
-            ->join('schools', 'students.school', '=', 'schools.id')->get();
-            return Datatables::of($data)
-                    ->addIndexColumn()
-                    ->addColumn('action', function($row){
-                        $btn = '<a href="students/'.$row->id.'/edit" class="btn btn-primary btn-xs mx-1"><i class="fa fa-pencil"></i></a>';
-                        $btn .= '<a data-id="'.$row->id.'" class="delete btn btn-danger btn-xs" href="javascript:void(0)"><i class="fa fa-trash"></i></a>';
-                        return $btn;
-                    })
-                    ->rawColumns(['action'])
-                    ->make(true);
-        }
-        return view('dashboard.pages.fm.high_students.index');
+    {
+
+    if ($request->ajax()) {
+        $data = StudentsModel::where('added_by',\Auth::user()->id)
+        ->where('student_type','Elementary')
+        ->select('schools.schoolName','parents.*','students.*')
+        ->join('parents', 'parents.student', '=', 'students.id')
+        ->join('schools', 'students.school', '=', 'schools.id')
+        ->get();
+        return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($row){
+                    $btn = '<a href="elementary_students/'.$row->id.'/edit" class="btn btn-primary btn-xs mx-1"><i class="fa fa-pencil"></i></a>';
+                    $btn .= '<a data-id="'.$row->id.'" class="delete btn btn-danger btn-xs" href="javascript:void(0)"><i class="fa fa-trash"></i></a>';
+                    return $btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+    }
+    return view('dashboard.pages.fm.elementary_students.index');
     }
 
     /**
@@ -43,7 +49,7 @@ class StudentsController extends Controller
      */
     public function create()
     {
-        return view('dashboard.pages.fm.high_students.create');
+        return view('dashboard.pages.fm.elementary_students.create');
     }
 
     /**
@@ -52,7 +58,7 @@ class StudentsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreHighStudentsRequest $request)
+    public function store(StoreElementaryRequest $request)
     {
         $validated = $request->validated();
 
@@ -60,19 +66,22 @@ class StudentsController extends Controller
         $user = StudentsModel::where('added_by',Auth::user()->id)->where('k12fp_number',$request->k12fp_number)->first();
         if($user)
         {
-            toastr()->error('You have already added the Student with this K12FP_NUMBER!');
+            toastr()->error('You have already added the Student with this K12FP NUMBER!');
             return redirect()->back(); 
         } else {
-            StudentsModel::create(array_merge($request->validated(), ['added_by' => Auth::user()->id]));
+            $student = StudentsModel::create(array_merge($request->validated(), [
+                'added_by' => Auth::user()->id,
+                'student_type' => 'Elementary'
+            ]));
+            ParentsModel::create(array_merge($request->validated(), ['student'=> $student->id]));
             toastr()->success('Record inserted Successfully');
-            return redirect('fm/students');
+            return redirect('fm/elementary_students');
         }
         
         } catch (\Throwable $th) {
         toastr()->error($th->getMessage());
         return redirect()->back();
         }
-        
     }
 
     /**
@@ -94,9 +103,13 @@ class StudentsController extends Controller
      */
     public function edit($id)
     {
-        $data = StudentsModel::where('students.id',$id)->select('schools.schoolName','schools.id','students.*')
-        ->join('schools', 'students.school', '=', 'schools.id')->first();
-        return view('dashboard.pages.fm.high_students.edit', compact('data'));
+    $data = StudentsModel::where('students.id',$id)
+    ->select('schools.schoolName','schools.id','parents.*','students.*')
+    ->join('schools', 'students.school', '=', 'schools.id')
+    ->join('parents', 'parents.student', '=', 'students.id')
+    ->first();
+
+    return view('dashboard.pages.fm.elementary_students.edit', compact('data'));
     }
 
     /**
@@ -110,8 +123,15 @@ class StudentsController extends Controller
     {
         $data = StudentsModel::find($id);
         $data->update($request->validated());
+
+        $pdata = ParentsModel::where('student',$id)
+        ->update([
+            'parentName' => $request->parentName,
+            'parentEmail' => $request->parentEmail,
+            'parentCell' => $request->parentCell,
+        ]);
         toastr()->success('Record Updated Successfully');
-        return redirect('fm/students');
+        return redirect('fm/elementary_students');
     }
 
     /**

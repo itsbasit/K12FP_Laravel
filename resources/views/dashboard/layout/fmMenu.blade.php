@@ -35,25 +35,25 @@
             <div class="collapse" id="students">
                 <ul class="nav sub-menu">
                     <li class="nav-item">
-                        <a href="{{url('fm/students')}}" class="nav-link">High Students</a>
+                        <a href="{{url('fm/students')}}" class="nav-link {{ request()->is('fm/students') ? 'active' : '' }}">High Students</a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="#" class="nav-link">Elementary Students</a>
+                        <a href="{{url('fm/elementary_students')}}" class="nav-link">Elementary Students</a>
                     </li>
                 </ul>
             </div>
         </li>
 
 
-        <li class="nav-item">
+        <li class="nav-item {{ request()->is('fm/fundraisers-pages') ? 'active' : '' }}">
             <a class="nav-link" data-toggle="collapse" href="#pages" role="button" aria-expanded=""
                 aria-controls="email">
                 <i class="link-icon" data-feather="file-text"></i>
                 <span class="link-title">Fundraiser Pages</span>
                 <i class="link-arrow" data-feather="chevron-down"></i>
             </a>
-            <div class="collapse" id="pages">
+            <div class="collapse {{ request()->is('fm/fundraisers-pages') ? 'show' : '' }}" id="pages">
                 <ul class="nav sub-menu">
                     <li class="nav-item">
                         <a href="#" class="nav-link">All Pages</a>

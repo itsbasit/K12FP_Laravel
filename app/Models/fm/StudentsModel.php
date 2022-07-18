@@ -5,10 +5,10 @@ namespace App\Models\fm;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class HighStudentsModel extends Model
+class StudentsModel extends Model
 {
     use HasFactory;
-    protected $table="high_students";
+    protected $table="students";
     protected $fillable = [
         'name',
         'email',
@@ -17,6 +17,7 @@ class HighStudentsModel extends Model
         'graduation_year',
         'grade',
         'school',
-        'added_by'
+        'added_by',
+        'student_type'
     ];
 }

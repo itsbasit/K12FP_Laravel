@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\fm\FundraiserPagesModel;
 use App\Models\FmModel;
 use Illuminate\Support\Facades\Facade;
 use Spatie\Permission\Models\Role;
@@ -17,6 +18,13 @@ class SiteController extends Controller
    public function index()
    {
        return view('home');
+   }
+
+
+   public function fundraiserPage($slug)
+   {
+    $data = FundraiserPagesModel::where("slug",$slug)->get()->first();
+    dd($data);
    }
 
    public function store_fm(Request $request)

@@ -27,6 +27,8 @@
                                 
                                 <th>Fundraiser Name</th>
                                 <th>Color</th>
+                                <th>Money Raising For?</th>
+                                <th>Total Goal $</th>
                                 <th>School Name</th>
                                 <th>Fundraiser Logo</th>
                                 <th>Action</th>
@@ -64,8 +66,16 @@ $(function() {
                 name: 'name'
             },
             {
+                data: 'money_raising_for',
+                name: 'money_raising_for'
+            },
+            {
                 data: 'color',
                 name: 'color'
+            },
+            {
+                data: 'total_goal',
+                name: 'total_goal'
             },
             {
                 data: 'schoolName',

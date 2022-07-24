@@ -20,6 +20,8 @@ class CreateFundraisersTable extends Migration
             $table->string('logo');
             $table->string('name');
             $table->string('school');
+            $table->string('money_raising_for');
+            $table->string('total_goal');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->enum('status', ['Active', 'Closed']);

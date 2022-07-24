@@ -92,6 +92,26 @@
                                 </div>
                             </div>
 
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Money Raising For?:</label>
+                                    <input type="text" name="money_raising_for" value="{{old('money_raising_for')}}" class="form-control mb-4 mb-md-0 {{$errors->has('name') ? 'is-invalid':''}}" placeholder="Money Raising for?">
+                                    @error('money_raising_for')
+                                    <label id="name-error" class="error invalid-feedback" for="name">{{$message}}</label>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Fundraiser Total Goal $:</label>
+                                    <input type="number" name="total_goal" value="{{old('total_goal')}}" class="form-control mb-4 mb-md-0 {{$errors->has('name') ? 'is-invalid':''}}" placeholder="Money Raising for?">
+                                    @error('total_goal')
+                                    <label id="name-error" class="error invalid-feedback" for="name">{{$message}}</label>
+                                    @enderror
+                                </div>
+                            </div>
+
                             <div class="col-md-12 stretch-card">
                                 <div class="card">
                                 <div class="card-body">

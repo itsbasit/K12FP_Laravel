@@ -10,7 +10,7 @@ use App\Http\Controllers\admin\VideosController;
 use App\Http\Controllers\fm\FundraisersController;
 use App\Http\Controllers\fm\StudentsController;
 use App\Http\Controllers\fm\ElementaryStudentsController;
-use App\Http\Controllers\fm\FundraiserPagesController;
+// use App\Http\Controllers\fm\FundraiserPagesController;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -52,10 +52,28 @@ Route::prefix('fm')->middleware(['auth','role:fm'])->group(function () {
     Route::get('/getDistricts', [App\Http\Controllers\fm\FetchData::class, 'getDistricts'])->name('getDistricts');
     Route::get('/getSchools', [App\Http\Controllers\fm\FetchData::class, 'getSchools'])->name('getSchools');
     Route::get('/getSchoolByName', [App\Http\Controllers\fm\FetchData::class, 'getSchoolByName'])->name('getSchoolByName');
+    Route::get('/checkSlug', [App\Http\Controllers\fm\FetchData::class, 'checkSlug'])->name('checkSlug');
+    Route::get('/checkStudentGoal', [App\Http\Controllers\fm\FetchData::class, 'checkFundraiserStudentGoal'])->name('checkStudentGoal');
     Route::resource('fund_raisers', FundraisersController::class);
     Route::resource('students', StudentsController::class);
     Route::resource('elementary_students', ElementaryStudentsController::class);
-    Route::resource('fundraisers-pages', FundraiserPagesController::class);
+
+    // Fundraiser Pages Routes
+    Route::get("/pages", [App\Http\Controllers\fm\Pages\FundraiserPagesController::class, 'index']);
+    Route::get("/main/create", [App\Http\Controllers\fm\Pages\FundraiserPagesController::class, 'createMainPage']);
+    Route::post("/main/store", [App\Http\Controllers\fm\Pages\FundraiserPagesController::class, 'StoreMainPage']);
+    Route::get("/main/{id}/edit", [App\Http\Controllers\fm\Pages\FundraiserPagesController::class, 'editMainPage']);
+    Route::put("/main/{id}/update", [App\Http\Controllers\fm\Pages\FundraiserPagesController::class, 'updateMainPage'])->name("main_update");
+    
+    // Student page
+    Route::get("/student/create", [App\Http\Controllers\fm\Pages\FundraiserPagesController::class, 'createStudentPage']);
+    Route::post("/student/store", [App\Http\Controllers\fm\Pages\FundraiserPagesController::class, 'StoreStudentPage']);
+    Route::get("/student/{id}/edit", [App\Http\Controllers\fm\Pages\FundraiserPagesController::class, 'editStudentPage']);
+    Route::put("/student/{id}/update", [App\Http\Controllers\fm\Pages\FundraiserPagesController::class, 'updateStudentPage'])->name("student_update");;
+    Route::get("/page/destroy/{id}", [App\Http\Controllers\fm\Pages\FundraiserPagesController::class, 'destroy']);
+    
+    
+    // Route::resource('fundraisers_pages', FundraiserPagesController::class);
 });
 
 Auth::routes();
@@ -66,3 +84,4 @@ Route::get('/sign-up', function(){
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::post('/register-fund-manager', [App\Http\Controllers\SiteController::class, 'store_fm']);
+Route::get('/fund/{slug}', [App\Http\Controllers\SiteController::class, 'fundraiserPage'])->name('fund');

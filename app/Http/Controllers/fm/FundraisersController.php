@@ -57,12 +57,14 @@ class FundraisersController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
+
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'color' => 'required',
             'logo' => 'required|mimes:jpeg,png,jpg,gif',
             'school' => 'required',
+            'money_raising_for' => 'required',
+            'total_goal' => 'required|numeric',
         ]);
         if ($validator->fails()) {
             return redirect()->back()
@@ -79,6 +81,8 @@ class FundraisersController extends Controller
             $data->logo = $logoName;
             $data->user_id = \Auth::user()->id;
             $data->school = $request->school;
+            $data->money_raising_for = $request->money_raising_for;
+            $data->total_goal = $request->total_goal;
             $data->save();
             toastr()->success('Fundraiser Created Successfully');
             return redirect('fm/fund_raisers');

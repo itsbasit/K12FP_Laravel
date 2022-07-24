@@ -56,16 +56,17 @@
             <div class="collapse {{ request()->is('fm/fundraisers-pages') ? 'show' : '' }}" id="pages">
                 <ul class="nav sub-menu">
                     <li class="nav-item">
-                        <a href="#" class="nav-link">All Pages</a>
+                        <a href="{{url('fm/pages')}}" class="nav-link">All Pages</a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="#" class="nav-link">Create Main Page</a>
+                        <a href="{{url('fm/main/create')}}" class="nav-link">Create Main Page</a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="#" class="nav-link">Create Student Page</a>
+                        <a href="{{url('fm/student/create')}}" class="nav-link">Create Student Page</a>
                     </li>
+
                 </ul>
             </div>
         </li>

@@ -45,23 +45,20 @@
           <div class="dropdown-body">
             <ul class="profile-nav p-0 pt-3">
               <li class="nav-item">
-                <a href="{{ url('/general/profile') }}" class="nav-link">
+                @if(\Auth::user()->hasRole('super_admin'))
+                <a href="{{ url('admin/profile') }}" class="nav-link">
                   <i data-feather="user"></i>
                   <span>Profile</span>
                 </a>
-              </li>
-              <li class="nav-item">
-                <a href="javascript:;" class="nav-link">
-                  <i data-feather="edit"></i>
-                  <span>Edit Profile</span>
+                @elseif(\Auth::user()->hasRole('fm'))
+                <a href="{{ url('fm/profile') }}" class="nav-link">
+                  <i data-feather="user"></i>
+                  <span>Profile</span>
                 </a>
+
+                @endif
               </li>
-              <li class="nav-item">
-                <a href="javascript:;" class="nav-link">
-                  <i data-feather="repeat"></i>
-                  <span>Switch User</span>
-                </a>
-              </li>
+              
               <li class="nav-item">
                 <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();" class="nav-link">
                   <i data-feather="log-out"></i>

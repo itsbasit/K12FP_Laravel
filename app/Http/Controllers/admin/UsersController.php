@@ -4,20 +4,24 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\admin\Users;
+// use App\Models\admin\Users;
+use App\Models\User;
+// use Spatie\Permission\Models\Role;
+
 use DataTables;
 
 class UsersController extends Controller
 {
     public function index(Request $request)
     {
+
         if ($request->ajax()) {
-            $data = Users::all();
+            $data = User::all();
             return Datatables::of($data)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
      
-                        //    $btn = '<a href="users/'.$row->id.'/block" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>';
+                           $btn = '<a href="users/'.$row->id.'/block" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>';
                            $btn = '<a data-id="'.$row->id.'" class="block btn btn-warning m-3 btn-xs" href="javascript:void(0)"><i class="fa fa-lock"></i></a>';
                            $btn .= '<a data-id="'.$row->id.'" class="delete btn btn-danger btn-xs" href="javascript:void(0)"><i class="fa fa-trash"></i></a>';
     

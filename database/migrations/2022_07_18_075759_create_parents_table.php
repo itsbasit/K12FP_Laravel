@@ -20,6 +20,7 @@ class CreateParentsTable extends Migration
             $table->string('parentCell');
             $table->unsignedBigInteger('student');
             $table->foreign('student')->references('id')->on('students')->onDelete('cascade');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

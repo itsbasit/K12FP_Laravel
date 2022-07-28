@@ -69,8 +69,16 @@ class StudentsController extends Controller
         }
         
         } catch (\Throwable $th) {
+        $error_code = $th->errorInfo[0];
+        if($error_code == 23000)
+        {
+        toastr()->error("Student with this K12FP Number already exists!");
+        return redirect()->back();
+        } else {
         toastr()->error($th->getMessage());
         return redirect()->back();
+        }
+        
         }
         
     }

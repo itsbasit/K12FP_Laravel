@@ -55,7 +55,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="{{url('admin/fundraisers')}}" class="nav-link">
                 <i class="link-icon" data-feather="calendar"></i>
                 <span class="link-title">Fundraisers</span>
             </a>
@@ -78,27 +78,8 @@
             </a>
         </li>
 
-        <li class="nav-item nav-category">Site</li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#pages" role="button" aria-expanded=""
-                aria-controls="email">
-                <i class="link-icon" data-feather="mail"></i>
-                <span class="link-title">Pages</span>
-                <i class="link-arrow" data-feather="chevron-down"></i>
-            </a>
-            <div class="collapse" id="pages">
-                <ul class="nav sub-menu">
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">All</a>
-                    </li>
 
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">Add New</a>
-                    </li>
-                </ul>
-            </div>
-        </li>
-
+        <li class="nav-item nav-category">General Settings</li>
         <li class="nav-item">
             <a href="#" class="nav-link">
                 <i class="link-icon" data-feather="calendar"></i>

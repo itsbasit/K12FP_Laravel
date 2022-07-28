@@ -26,6 +26,7 @@ class CreateFundraisersTable extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->enum('status', ['Active', 'Closed']);
             $table->date('ended_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

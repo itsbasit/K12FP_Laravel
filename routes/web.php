@@ -43,6 +43,14 @@ Route::prefix('admin')->middleware(['auth','role:super_admin'])->group(function 
     Route::delete('/users/destroy', [App\Http\Controllers\admin\UsersController::class, 'destroy'])->name('destroy');
     Route::get('/import', [App\Http\Controllers\SchoolsDataController::class, 'index'])->name('import');
     Route::post('/import', [App\Http\Controllers\SchoolsDataController::class, 'store']);
+
+    Route::get("/fundraisers", [App\Http\Controllers\admin\Fundraisers::class, 'index'])->name("fundraisers");
+    Route::put("/fundraisers/block/{id}", [App\Http\Controllers\admin\Fundraisers::class, 'block']);
+    Route::put("/fundraisers/unblock/{id}", [App\Http\Controllers\admin\Fundraisers::class, 'unblock']);
+    Route::post("/fundraisers/delete/{id}", [App\Http\Controllers\admin\Fundraisers::class, 'delete']);
+    Route::get("/fundraisers/{id}/view", [App\Http\Controllers\admin\Fundraisers::class, 'view_fundraiser']);
+    Route::get("/profile", [App\Http\Controllers\ProfileController::class, 'index']);
+
 });
 
 
@@ -71,7 +79,7 @@ Route::prefix('fm')->middleware(['auth','role:fm'])->group(function () {
     Route::get("/student/{id}/edit", [App\Http\Controllers\fm\Pages\FundraiserPagesController::class, 'editStudentPage']);
     Route::put("/student/{id}/update", [App\Http\Controllers\fm\Pages\FundraiserPagesController::class, 'updateStudentPage'])->name("student_update");;
     Route::get("/page/destroy/{id}", [App\Http\Controllers\fm\Pages\FundraiserPagesController::class, 'destroy']);
-    
+    Route::get("/profile", [App\Http\Controllers\ProfileController::class, 'index']);
     
     // Route::resource('fundraisers_pages', FundraiserPagesController::class);
 });

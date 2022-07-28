@@ -23,7 +23,7 @@ class FundraisersController extends Controller
         
         if ($request->ajax()) {
             $data = FundraisersModel::where('user_id',\Auth::user()->id)->select('fundraisers.*', 'schools.schoolName')
-            ->join('schools', 'fundraisers.school', '=', 'schools.id')->get();
+            ->leftJoin('schools', 'fundraisers.school', '=', 'schools.id')->get();
             return Datatables::of($data)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){

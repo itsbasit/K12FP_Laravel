@@ -26,6 +26,7 @@ class CreateStudentsTable extends Migration
             $table->unsignedBigInteger('added_by');
             $table->foreign('added_by')->references('id')->on('users')->onDelete('cascade');
             $table->enum('student_type', ['High', 'Elementary'])->default('High');;
+            $table->softDeletes();
             $table->timestamps();
         });
     }

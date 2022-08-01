@@ -44,14 +44,16 @@ class Roles_seeder extends Seeder
  
          // create demo users
          $user = \App\Models\User::factory()->create([
-             'name' => 'Example User',
+             'first_name' => 'Example',
+             'last_name' => 'User',
              'email' => 'fm@fm.com',
              'password' => Hash::make('fm123456'),
          ]);
          $user->assignRole($fm_role);
  
          $user = \App\Models\User::factory()->create([
-             'name' => 'Admin',
+             'first_name' => 'Super',
+             'last_name' => 'Admin',
              'email' => 'admin@admin.com',
              'password' => Hash::make('admin123456')
          ]);

@@ -17,9 +17,6 @@ class CreateFundManagerTable extends Migration
         $table->id();
 		$table->integer('user_id');
 		$table->string('position');
-		$table->string('first_name');
-		$table->string('last_name');
-		$table->string('email');
 		$table->string('orgType');
 		$table->string('org_name');
 		$table->string('streetAddress');

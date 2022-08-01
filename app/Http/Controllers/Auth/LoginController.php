@@ -21,12 +21,24 @@ class LoginController extends Controller
 
     use AuthenticatesUsers;
 
+    public function authenticated()
+    {
+        if(\Auth::user()->profile_completed)
+        {
+            return redirect('/dashboard');
+        } else {
+            return redirect('/profile');
+        }
+        
+    }
+
+
     /**
      * Where to redirect users after login.
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    // protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
      * Create a new controller instance.

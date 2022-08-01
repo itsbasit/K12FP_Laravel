@@ -62,6 +62,7 @@ class FundraisersController extends Controller
             'name' => 'required',
             'color' => 'required',
             'logo' => 'required|mimes:jpeg,png,jpg,gif',
+            'main_photo' => 'required|mimes:jpeg,png,jpg,gif',
             'school' => 'required',
             'money_raising_for' => 'required',
             'total_goal' => 'required|numeric',
@@ -73,12 +74,16 @@ class FundraisersController extends Controller
         } else {
     
             $logoName = 'fundraiser'. time().'.'.$request->logo->extension();  
-            $request->logo->move(public_path('uploads'), $logoName);
+            $request->logo->move(public_path('uploads/fundraiser'), $logoName);
+
+            $main_photo = 'fundraiser'. time().'.'.$request->main_photo->extension();  
+            $request->main_photo->move(public_path('uploads/fundraiser'), $main_photo);
 
             $data = new FundraisersModel;
             $data->name = $request->name;
             $data->color = $request->color;
             $data->logo = $logoName;
+            $data->main_photo = $main_photo;
             $data->user_id = \Auth::user()->id;
             $data->school = $request->school;
             $data->money_raising_for = $request->money_raising_for;
@@ -135,7 +140,7 @@ class FundraisersController extends Controller
     {
         try {
             $image = FundraisersModel::find($id);
-            unlink("uploads/".$image->logo);
+            unlink("uploads/fundraiser/".$image->logo);
             FundraisersModel::where('id', $id)->delete();
             return response()->json("success");
         } catch (\Throwable $th) {

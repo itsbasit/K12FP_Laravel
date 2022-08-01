@@ -6,12 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Cviebrock\EloquentSluggable\Sluggable;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 class FundraiserPagesModel extends Model
 {
-    use Sluggable,SoftDeletes;
+    use Sluggable;
 
     use HasFactory;
     protected $table = "pages";

@@ -124,6 +124,19 @@
                                 </div>
                             </div>
 
+
+                            <div class="col-md-12 stretch-card">
+                                <div class="card">
+                                <div class="card-body">
+                                    <label class="form-label">Choose Fundraiser Main/Cover Photo:</label>
+                                    <input name="main_photo" type="file" id="myDropify" class="border {{$errors->has('main_photo') ? 'is-invalid':''}}"/>
+                                @error('main_photo')
+                                    <p class="text-danger">{{$message}}</p>
+                                @enderror
+                                </div>
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 <input type="submit" class="btn btn-primary w-100" value="Create">
                             </div>

@@ -1,5 +1,7 @@
 <?php
-  
+
+use App\Models\Transactions;
+
 function changeDateFormate($date,$date_format){
     return \Carbon\Carbon::createFromFormat('Y-m-d', $date)->format($date_format);    
 }
@@ -24,4 +26,18 @@ function csvToArray($filename = '', $delimiter = ',')
     }
 
     return $data;
+}
+
+
+function getSum($fundraiser = '', $student = '')
+{
+    if($student == '')
+    {
+        $total_amount = Transactions::where('fundraiser', $fundraiser)
+        ->sum('amount_donated');
+    } else {
+        $total_amount = Transactions::where('student', $student)
+        ->sum('amount_donated');
+    }
+    return $total_amount;
 }

@@ -71,25 +71,13 @@
             </div>
         </li>
 
+        
         <li class="nav-item nav-category">Invitations</li>
         <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#invite" role="button" aria-expanded=""
-                aria-controls="email">
-                <i class="link-icon" data-feather="file-text"></i>
-                <span class="link-title">Send Invite</span>
-                <i class="link-arrow" data-feather="chevron-down"></i>
+            <a href="{{url('fm/invites')}}" class="nav-link">
+                <i class="link-icon" data-feather="calendar"></i>
+                <span class="link-title">Send Invites</span>
             </a>
-            <div class="collapse" id="invite">
-                <ul class="nav sub-menu">
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">Students</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">Parents</a>
-                    </li>
-                </ul>
-            </div>
         </li>
 
         <li class="nav-item nav-category">Payments</li>

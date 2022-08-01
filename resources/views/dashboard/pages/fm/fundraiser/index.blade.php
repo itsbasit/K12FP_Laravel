@@ -85,7 +85,7 @@ $(function() {
                 data: 'logo',
                 name: 'logo',
                 render: function( data, type, full, meta ) {
-                        return "<img src=\"/uploads/" + data + "\" height=\"50\"/>";
+                        return "<img src=\"/uploads/fundraiser/" + data + "\" height=\"50\"/>";
                     }
             },
             {

@@ -30,12 +30,13 @@
       
       <li class="nav-item dropdown nav-profile">
         <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <img src="{{ url('https://via.placeholder.com/30x30') }}" alt="profile">
+          <img src="{{\Auth::user()->dp != null ? '/uploads/' . \Auth::user()->dp : 'https://via.placeholder.com/80x80'  }}" alt="profile">
         </a>
         <div class="dropdown-menu" aria-labelledby="profileDropdown">
           <div class="dropdown-header d-flex flex-column align-items-center">
             <div class="figure mb-3">
-              <img src="{{ url('https://via.placeholder.com/80x80') }}" alt="">
+            
+              <img src="{{\Auth::user()->dp != null ? '/uploads/' . \Auth::user()->dp : 'https://via.placeholder.com/80x80'  }}" alt="">
             </div>
             <div class="info text-center">
               <p class="name font-weight-bold mb-0">{{Auth::user()->name}}</p>
@@ -45,18 +46,10 @@
           <div class="dropdown-body">
             <ul class="profile-nav p-0 pt-3">
               <li class="nav-item">
-                @if(\Auth::user()->hasRole('super_admin'))
-                <a href="{{ url('admin/profile') }}" class="nav-link">
+              <a href="{{ url('/profile') }}" class="nav-link">
                   <i data-feather="user"></i>
                   <span>Profile</span>
                 </a>
-                @elseif(\Auth::user()->hasRole('fm'))
-                <a href="{{ url('fm/profile') }}" class="nav-link">
-                  <i data-feather="user"></i>
-                  <span>Profile</span>
-                </a>
-
-                @endif
               </li>
               
               <li class="nav-item">

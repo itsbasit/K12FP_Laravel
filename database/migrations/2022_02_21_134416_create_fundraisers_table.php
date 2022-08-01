@@ -18,15 +18,15 @@ class CreateFundraisersTable extends Migration
             $table->id();
             $table->string('color');
             $table->string('logo');
+            $table->string('main_photo');
             $table->string('name');
             $table->string('school');
             $table->string('money_raising_for');
             $table->string('total_goal');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->enum('status', ['Active', 'Closed']);
+            $table->enum('status', ['Active', 'Closed', 'Ended'])->default('Active');
             $table->date('ended_at')->nullable();
-            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -29,8 +29,14 @@ use Illuminate\Support\Facades\Auth;
 
 Route::get('/dashboard', [App\Http\Controllers\admin\HomeController::class, 'index'])->middleware(['auth']);;
 
-Route::get('/', [App\Http\Controllers\SiteController::class, 'index'])->name('home');
+// Route::get('/', [App\Http\Controllers\SiteController::class, 'index'])->name('home');
+Route::get('/', function(){
+    return view('auth.login');
+});
 
+Route::get('/home', function(){
+    return view('home');
+});
 // Super Admin Routes
 Route::prefix('admin')->middleware(['auth','role:super_admin'])->group(function () {
     Route::resource('states', StatesController::class);
@@ -54,7 +60,7 @@ Route::prefix('admin')->middleware(['auth','role:super_admin'])->group(function 
 });
 
 
-Route::prefix('fm')->middleware(['auth','role:fm'])->group(function () {
+Route::prefix('fm')->middleware(['auth','role:fm','user.profile','verified'])->group(function () {
     Route::get('/videos', [App\Http\Controllers\fm\VideosController::class, 'index'])->name('videos');
     Route::get('/getCounty', [App\Http\Controllers\fm\FetchData::class, 'getCounty'])->name('getCounty');
     Route::get('/getDistricts', [App\Http\Controllers\fm\FetchData::class, 'getDistricts'])->name('getDistricts');
@@ -79,17 +85,31 @@ Route::prefix('fm')->middleware(['auth','role:fm'])->group(function () {
     Route::get("/student/{id}/edit", [App\Http\Controllers\fm\Pages\FundraiserPagesController::class, 'editStudentPage']);
     Route::put("/student/{id}/update", [App\Http\Controllers\fm\Pages\FundraiserPagesController::class, 'updateStudentPage'])->name("student_update");;
     Route::get("/page/destroy/{id}", [App\Http\Controllers\fm\Pages\FundraiserPagesController::class, 'destroy']);
-    Route::get("/profile", [App\Http\Controllers\ProfileController::class, 'index']);
     
+    // Invites Routes
+    Route::get("/invites", [App\Http\Controllers\fm\InvitesController::class, 'index']);
+    Route::get("/invites_list", [App\Http\Controllers\fm\InvitesController::class, 'invitedStudents']);
+    Route::post("/submitQueue", [App\Http\Controllers\fm\InvitesController::class, 'submitQueue']);
+    Route::get("/send_invite", [App\Http\Controllers\fm\InvitesController::class, 'sendInvite']);
+    
+
     // Route::resource('fundraisers_pages', FundraiserPagesController::class);
 });
 
 Auth::routes();
+Auth::routes(['verify' => true]);
 
-Route::get('/sign-up', function(){
-    return view('register');
-})->name('sign-up');
-
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::post('/register-fund-manager', [App\Http\Controllers\SiteController::class, 'store_fm']);
+Route::get("/profile", [App\Http\Controllers\ProfileController::class, 'index']);
 Route::get('/fund/{slug}', [App\Http\Controllers\SiteController::class, 'fundraiserPage'])->name('fund');
+Route::get('/checkout', [App\Http\Controllers\SiteController::class, 'checkout'])->name('checkout');
+Route::post('/payment/add-funds/paypal', [App\Http\Controllers\PaymentController::class, 'payWithpaypal']);
+Route::get('/donation/status', [App\Http\Controllers\PaymentController::class, 'getPaymentStatus']);
+
+Route::post('complete_profile', [App\Http\Controllers\ProfileController::class, 'complete_profile']);
+Route::put('update_profile', [App\Http\Controllers\ProfileController::class, 'update_profile']);
+Route::post('update_dp', [App\Http\Controllers\ProfileController::class, 'updateDp']);
+Route::post('change_password', [App\Http\Controllers\ProfileController::class, 'changePassword']);
+
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
